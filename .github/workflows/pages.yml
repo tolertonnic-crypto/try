@@ -5,12 +5,10 @@ name: Deploy site to GitHub Pages
 # main (e.g. after this PR is merged), and can also be triggered manually.
 on:
   push:
-    branches: [main]
-    paths:
-      - "index.html"
-      - "tools/**"
-      - ".nojekyll"
-      - ".github/workflows/pages.yml"
+    # Deploys from whichever branch ends up holding the site. `main` is the
+    # conventional target; `baseline` is the current base branch (automation
+    # here could not create `main`). Keep the one you settle on.
+    branches: [main, baseline]
   workflow_dispatch:
 
 permissions:
