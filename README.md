@@ -4,6 +4,10 @@
 
 Maintained by WealthForge · Version 1.0 · Source of record
 
+**Live site:** once GitHub Pages is enabled, this framework is published at
+`https://tolertonnic-crypto.github.io/try/` — a buyer-facing landing page and the interactive
+self-assessment tool.
+
 ---
 
 Autonomous agents cannot currently prove they acted within their mandate. That is not a
@@ -49,6 +53,8 @@ same-family cross-agent verification, formal constraint checking — fail it. Se
 | [`docs/falsification-test.md`](docs/falsification-test.md) | Standalone evaluation tool for testing any Component 3 claim |
 | [`docs/assessment-methodology.md`](docs/assessment-methodology.md) | **The Agent Accountability Assessment** — a scored rubric for evaluating a real deployment |
 | [`tools/self-assessment.html`](tools/self-assessment.html) | Interactive readiness scorecard — score your own deployment in ~5 minutes |
+| [`blog/agent-accountability-gap.md`](blog/agent-accountability-gap.md) | Buyer-facing blog post — publishable on Substack, Medium, or a personal site |
+| [`index.html`](index.html) | Landing page for the published GitHub Pages site |
 | [`products/services.md`](products/services.md) | Advisory, assessment, and licensing offerings with pricing |
 | [`products/buyer-brief.md`](products/buyer-brief.md) | The framework explained for compliance, risk, and infrastructure buyers |
 | [`MONETIZATION.md`](MONETIZATION.md) | The revenue engine: how the IP converts to revenue, with a dated timeline |

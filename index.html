@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Agent Accountability Framework</title>
+<meta name="description" content="A reference architecture for proving autonomous agents acted within their mandate. Score your deployment against the four-component framework.">
+<style>
+  :root {
+    --bg: #f7f8fa; --panel: #fff; --ink: #14181f; --muted: #5b6472; --line: #e4e7ec;
+    --accent: #2f6df6; --accent-ink: #fff; --good: #1a8f5a; --warn: #c67a12; --bad: #c23b3b;
+    --chip: #eef1f6; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0e1116; --panel:#161b22; --ink:#e7ebf0; --muted:#9aa4b2; --line:#262c36;
+      --accent:#4f8bff; --chip:#1d232c; --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); }
+  }
+  :root[data-theme="dark"] { --bg:#0e1116; --panel:#161b22; --ink:#e7ebf0; --muted:#9aa4b2;
+    --line:#262c36; --accent:#4f8bff; --chip:#1d232c; --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35); }
+  :root[data-theme="light"] { --bg:#f7f8fa; --panel:#fff; --ink:#14181f; --muted:#5b6472;
+    --line:#e4e7ec; --accent:#2f6df6; --chip:#eef1f6; --shadow:0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.06); }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  a { color: var(--accent); }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+  .hero { padding: 72px 0 40px; }
+  .eyebrow { color:var(--accent); font-weight:650; letter-spacing:.05em; text-transform:uppercase; font-size:12.5px; }
+  h1 { font-size: 40px; line-height:1.12; letter-spacing:-.025em; margin:12px 0 16px; max-width: 18ch; }
+  .lede { font-size: 19px; color: var(--muted); max-width: 62ch; }
+  .cta-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; }
+  .btn { display:inline-block; font-weight:640; border-radius:10px; padding:13px 22px; text-decoration:none; border:1px solid transparent; }
+  .btn-primary { background:var(--accent); color:var(--accent-ink); }
+  .btn-primary:hover { filter:brightness(1.06); }
+  .btn-ghost { background:transparent; color:var(--ink); border-color:var(--line); }
+  .btn-ghost:hover { border-color:var(--accent); }
+  section { padding: 24px 0; }
+  h2 { font-size: 24px; letter-spacing:-.02em; margin: 20px 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 18px; max-width: 60ch; }
+  table { width:100%; border-collapse: collapse; background:var(--panel); border:1px solid var(--line);
+    border-radius:12px; overflow:hidden; box-shadow:var(--shadow); font-size:14.5px; }
+  .tbl-scroll { overflow-x:auto; }
+  th, td { text-align:left; padding: 12px 14px; border-bottom:1px solid var(--line); vertical-align: top; }
+  th { background: var(--chip); font-size:12.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); }
+  tr:last-child td { border-bottom:none; }
+  .pill { display:inline-block; font-size:12px; font-weight:600; border-radius:999px; padding:2px 9px; white-space:nowrap; }
+  .pill.open { background:color-mix(in srgb, var(--bad) 16%, transparent); color:var(--bad); }
+  .pill.ok { background:color-mix(in srgb, var(--good) 16%, transparent); color:var(--good); }
+  .pill.part { background:color-mix(in srgb, var(--warn) 18%, transparent); color:var(--warn); }
+  .quote { border-left:3px solid var(--accent); background:var(--panel); border:1px solid var(--line);
+    border-left-width:3px; border-radius:0 12px 12px 0; padding:18px 20px; font-size:17px; box-shadow:var(--shadow); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:14px; margin-top:8px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; box-shadow:var(--shadow); }
+  .card h3 { margin:0 0 4px; font-size:16.5px; }
+  .card p { margin:0 0 10px; color:var(--muted); font-size:14px; }
+  .card .price { font-weight:680; font-size:15px; }
+  .card a { font-weight:620; text-decoration:none; font-size:14px; }
+  .band { background:color-mix(in srgb, var(--accent) 9%, var(--panel)); border:1px solid color-mix(in srgb, var(--accent) 26%, var(--line));
+    border-radius:16px; padding:30px; margin:16px 0; text-align:center; }
+  .band h2 { margin-top:0; }
+  .links a { margin-right:18px; white-space:nowrap; font-weight:600; text-decoration:none; }
+  footer { border-top:1px solid var(--line); margin-top:32px; padding:26px 0 60px; color:var(--muted); font-size:13.5px; }
+  footer a { text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">The Agent Accountability Framework</div>
+    <h1>Can you prove your agent acted within its mandate?</h1>
+    <p class="lede">Autonomous agents cannot currently prove they reasoned within their mandate.
+      Not because of bad logs — because of a structural gap in accountability that no production
+      system closes. This is the reference architecture for that gap, and a free tool to score
+      your own deployment against it.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="tools/self-assessment.html">Score your deployment →</a>
+      <a class="btn btn-ghost" href="https://github.com/tolertonnic-crypto/try/blob/main/docs/research-brief.md">Read the research brief</a>
+    </div>
+  </header>
+
+  <section>
+    <h2>Perfect logs are not enough</h2>
+    <p class="sub">Accountability has four independent components. Most deployments have two. The
+      third — an observer that can catch a deviation the agent itself would call compliant — is
+      unsolved industry-wide, and it is where deployment liability concentrates.</p>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Component</th><th>The question it answers</th><th>Industry status</th></tr></thead>
+        <tbody>
+          <tr><td><b>1 · Signed intent</b></td><td>What was the agent told?</td><td><span class="pill part">Partially solved</span></td></tr>
+          <tr><td><b>2 · Custody chain</b></td><td>What did the agent do?</td><td><span class="pill part">Largely solved</span></td></tr>
+          <tr><td><b>3 · External witness</b></td><td>Did it <em>reason</em> within mandate?</td><td><span class="pill open">Architecturally open</span></td></tr>
+          <tr><td><b>4 · Verification attestation</b></td><td>Did the outcome match the mandate?</td><td><span class="pill part">Partly solved</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>The falsification test</h2>
+    <p class="sub">One cheap question separates a genuine external witness from a sophisticated
+      log. Run it on any vendor claiming external or reasoning-level verification.</p>
+    <div class="quote">A valid external witness must be able to detect a deviation that the agent
+      itself would classify as compliant. If it only catches what the agent could have caught, it
+      is a log, not a witness.</div>
+    <p class="sub" style="margin-top:16px">EigenLayer AVS attestation, Chainlink DECO,
+      organizational audit teams, same-family cross-agent verification, and formal constraint
+      checking all fail it — each attests to the wrong layer.
+      <a href="https://github.com/tolertonnic-crypto/try/blob/main/docs/falsification-test.md">See the worked examples →</a></p>
+  </section>
+
+  <section class="band">
+    <h2>Score your deployment in ~5 minutes</h2>
+    <p class="sub" style="margin:0 auto 20px">A free, self-contained readiness scorecard. Get a
+      score (0–100), a conformance level, and a ranked gap list — with Component 3 weighted at 40%
+      because that is where the liability lives.</p>
+    <a class="btn btn-primary" href="tools/self-assessment.html">Open the self-assessment →</a>
+  </section>
+
+  <section>
+    <h2>Turn a score into a defensible record</h2>
+    <p class="sub">The framework is open. These are the ways to engage the expertise that built it.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>Accountability Assessment</h3>
+        <p>A scored, signed evaluation of your deployment you can put in front of a regulator or board.</p>
+        <div class="price">$2,500–$7,500</div>
+      </div>
+      <div class="card">
+        <h3>Advisory / Retainer</h3>
+        <p>An expert on call to pressure-test your architecture and your vendors' Component 3 claims.</p>
+        <div class="price">$1,500–$5,000 / mo</div>
+      </div>
+      <div class="card">
+        <h3>Framework License</h3>
+        <p>Adopt the specification and assessment methodology as your internal accountability standard.</p>
+        <div class="price">$10,000 / year</div>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:16px"><a href="https://github.com/tolertonnic-crypto/try/blob/main/products/services.md">Full services &amp; pricing →</a></p>
+  </section>
+
+  <section>
+    <h2>Read the work</h2>
+    <p class="links">
+      <a href="https://github.com/tolertonnic-crypto/try/blob/main/docs/research-brief.md">Research brief</a>
+      <a href="https://github.com/tolertonnic-crypto/try/blob/main/docs/framework-spec.md">Framework spec</a>
+      <a href="https://github.com/tolertonnic-crypto/try/blob/main/docs/falsification-test.md">Falsification test</a>
+      <a href="https://github.com/tolertonnic-crypto/try/blob/main/docs/assessment-methodology.md">Assessment methodology</a>
+      <a href="https://github.com/tolertonnic-crypto/try/blob/main/blog/agent-accountability-gap.md">Blog post</a>
+    </p>
+  </section>
+
+  <footer>
+    Maintained by WealthForge · Framework licensed CC BY 4.0 · Component 3 is unsolved
+    industry-wide; a low Component 3 score is expected and is the point of the assessment.
+    <br><a href="https://github.com/tolertonnic-crypto/try">View the repository on GitHub →</a>
+  </footer>
+
+</div>
+</body>
+</html>
