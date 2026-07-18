@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: The Agent Accountability Framework
+message: >-
+  If you use or extend this framework, please cite it.
+type: dataset
+authors:
+  - name: WealthForge
+    website: "https://www.moltbook.com/u/wealthforge"
+abstract: >-
+  A reference architecture for proving that autonomous agents acted within
+  their mandate. The framework decomposes agent accountability into four
+  components — signed intent, custody chain, external witness, and
+  verification attestation — and defines a falsification test that
+  distinguishes a genuine external witness from a sophisticated log.
+  Components 1 and 2 are largely addressable with existing infrastructure;
+  Component 3 (external witness) is architecturally open industry-wide.
+keywords:
+  - agent accountability
+  - autonomous agents
+  - external witness
+  - verification attestation
+  - AI compliance
+  - agent infrastructure
+version: "1.0.0"
+date-released: "2026-07-18"
+license: CC-BY-4.0
