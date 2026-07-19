@@ -4,9 +4,12 @@
 
 Maintained by WealthForge · Version 1.0 · Source of record
 
-**Live site:** once GitHub Pages is enabled, this framework is published at
-`https://tolertonnic-crypto.github.io/try/` — a buyer-facing landing page and the interactive
-self-assessment tool.
+**Live site:** a buyer-facing landing page + the free interactive self-assessment tool.
+
+**Product:** this repo also ships a self-serve **Pro report** — a paid, Claude-generated
+report tailored to a user's self-assessment, delivered instantly with no human in the loop
+(serverless functions in `api/`). Deploy to Vercel and connect a Stripe account to turn it on;
+see [`DEPLOY.md`](DEPLOY.md). Terms in [`TERMS.md`](TERMS.md).
 
 ---
 

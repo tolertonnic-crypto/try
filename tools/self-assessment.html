@@ -135,6 +135,19 @@
       <h3>Your highest-liability gaps</h3>
       <div id="gapList"></div>
     </div>
+    <div class="cta" id="proCta">
+      <h3>Get your tailored Pro report — instant</h3>
+      <p>An in-depth report on <em>your</em> scores: component-by-component analysis, a
+        prioritized remediation roadmap, interim mitigations for the gaps you can't yet close,
+        and an honest script for your board or regulator. Generated on the spot and delivered
+        immediately.</p>
+      <p style="margin-top:12px">
+        <button class="btn-primary" id="buyPro">Get my Pro report →</button>
+        <span id="proErr" style="color:#c23b3b;font-size:13px;margin-left:10px"></span>
+      </p>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:8px">
+        A tool-generated report, not a professional audit. Secure checkout via Stripe.</p>
+    </div>
     <div class="cta">
       <h3>Turn this into a defensible record</h3>
       <p>This self-assessment gives you the score and the gaps. A commissioned
@@ -312,6 +325,12 @@
       });
     }
 
+    // Stash for the Pro checkout (only used on the deployed product).
+    window.__wfScores = {
+      c1: scores[1] || 0, c2: scores[2] || 0, c3: scores[3] || 0, c4: scores[4] || 0,
+      readiness: readiness,
+    };
+
     const res = document.getElementById("result");
     res.classList.add("show");
     res.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -323,5 +342,28 @@
     document.getElementById("result").classList.remove("show");
     document.getElementById("warn").classList.remove("show");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // Pro report checkout (works only on the deployed product where /api exists).
+  const buyBtn = document.getElementById("buyPro");
+  if (buyBtn) buyBtn.addEventListener("click", async () => {
+    const errEl = document.getElementById("proErr");
+    errEl.textContent = "";
+    if (!window.__wfScores) { errEl.textContent = "Score your deployment first."; return; }
+    const original = buyBtn.textContent;
+    buyBtn.disabled = true; buyBtn.textContent = "Redirecting to secure checkout…";
+    try {
+      const r = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ scores: window.__wfScores }),
+      });
+      const data = await r.json();
+      if (!r.ok || !data.url) throw new Error(data.error || ("HTTP " + r.status));
+      window.location.href = data.url;
+    } catch (e) {
+      errEl.textContent = "Checkout unavailable (" + (e.message || e) + ").";
+      buyBtn.disabled = false; buyBtn.textContent = original;
+    }
   });
 </script>
