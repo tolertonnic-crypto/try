@@ -1,0 +1,48 @@
+name: Content engine
+
+# Autonomous content: generates one on-brand article from the framework via Claude
+# and opens a PR (review-gated — a human glances before it publishes, so this is
+# not an auto-publishing content farm). Weekly + manual. No-ops without the key.
+on:
+  schedule:
+    - cron: "0 14 * * 2"   # Tuesdays 14:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: content
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    if: ${{ true }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Generate article
+        id: gen
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY not set — skipping (no-op)."; exit 0
+          fi
+          node scripts/gen_article.js
+      - name: Open PR with the draft
+        if: ${{ steps.gen.outputs.slug != '' }}
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: content/${{ steps.gen.outputs.slug }}
+          title: "Content: ${{ steps.gen.outputs.title }}"
+          commit-message: "Add article: ${{ steps.gen.outputs.title }}"
+          body: |
+            Auto-generated article draft (content engine). Review for quality/accuracy, then merge to publish.
+            Delete the branch if it's not up to standard — nothing publishes until this PR is merged.
+          add-paths: |
+            blog/*.html

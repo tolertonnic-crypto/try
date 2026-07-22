@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Evaluate Whether Your AI Agent Can Prove It Behaved</title>
+<meta name="description" content="Perfect logs don't prove an autonomous agent acted within its mandate. A practical guide to evaluating agent accountability across four components — and the one test that separates a real external witness from a sophisticated log.">
+<meta name="theme-color" content="#2f6df6">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Agent Accountability Framework">
+<meta property="og:title" content="How to Evaluate Whether Your AI Agent Can Prove It Behaved">
+<meta property="og:description" content="Perfect logs aren't enough. Evaluate agent accountability across four components, and apply the one test that catches a compliant-looking deviation.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="How to Evaluate Whether Your AI Agent Can Prove It Behaved">
+<meta name="twitter:description" content="A practical guide to agent accountability: the four components, and the falsification test.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle",
+ "headline":"How to Evaluate Whether Your AI Agent Can Prove It Behaved",
+ "description":"A practical guide to evaluating agent accountability across four components, and the falsification test that separates a real external witness from a sophisticated log.",
+ "about":["agent accountability","AI agent compliance","external witness","verification attestation"]}
+</script>
+<style>
+  :root{--bg:#f7f8fa;--panel:#fff;--ink:#14181f;--muted:#5b6472;--line:#e4e7ec;--accent:#2f6df6;--chip:#eef1f6}
+  @media (prefers-color-scheme:dark){:root{--bg:#0e1116;--panel:#161b22;--ink:#e7ebf0;--muted:#9aa4b2;--line:#262c36;--accent:#4f8bff;--chip:#1d232c}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:44px 20px 80px}
+  a{color:var(--accent)}
+  .eyebrow{color:var(--accent);font-weight:650;letter-spacing:.04em;text-transform:uppercase;font-size:12.5px}
+  h1{font-size:32px;line-height:1.15;letter-spacing:-.02em;margin:10px 0 8px}
+  h2{font-size:22px;letter-spacing:-.01em;margin:34px 0 8px}
+  .muted{color:var(--muted)}
+  .lede{font-size:19px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:15px;margin:16px 0}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--chip);font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+  tr:last-child td{border-bottom:none}
+  blockquote{border-left:3px solid var(--accent);background:var(--panel);border:1px solid var(--line);border-radius:0 12px 12px 0;margin:18px 0;padding:14px 18px;font-size:18px}
+  .cta{margin:30px 0;padding:22px;border-radius:14px;background:color-mix(in srgb,var(--accent) 10%,var(--panel));border:1px solid color-mix(in srgb,var(--accent) 26%,var(--line))}
+  .btn{display:inline-block;font-weight:640;border-radius:10px;padding:12px 20px;text-decoration:none;background:var(--accent);color:#fff;margin-top:6px}
+  ol li,ul li{margin:7px 0}
+  footer{margin-top:40px;border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <article>
+    <div class="eyebrow">Agent Accountability</div>
+    <h1>How to evaluate whether your AI agent can prove it behaved</h1>
+    <p class="lede">Your agent has clean logs and a perfect on-chain record. That still doesn't
+      answer the question your compliance team will ask. Here's how to evaluate what you actually
+      have — and where the real gap is.</p>
+
+    <p>Once an autonomous agent is deployed on behalf of an organization with real accountability
+      obligations — regulatory, fiduciary, contractual — one question decides whether it ships:
+      <em>can you prove it acted within its mandate?</em> Most teams assume their logs answer it.
+      They don't. Logs prove <strong>what happened</strong>. They don't prove the agent
+      <strong>interpreted its mandate the way you intended</strong> — and that's exactly the gap a
+      regulator or counterparty will press on.</p>
+
+    <h2>The four components you're actually being asked about</h2>
+    <p>Accountability decomposes into four independent things. You need all four; most deployments
+      have two.</p>
+    <table>
+      <thead><tr><th>Component</th><th>The question it answers</th><th>Where the industry is</th></tr></thead>
+      <tbody>
+        <tr><td><b>Signed intent</b></td><td>What was the agent told?</td><td>Solvable today</td></tr>
+        <tr><td><b>Custody chain</b></td><td>What did the agent do?</td><td>Solvable today</td></tr>
+        <tr><td><b>External witness</b></td><td>Did it <em>reason</em> within its mandate?</td><td>No production solution</td></tr>
+        <tr><td><b>Verification attestation</b></td><td>Did the outcome match the mandate?</td><td>Partly solvable</td></tr>
+      </tbody>
+    </table>
+    <p>Components 1 and 2 are your logs — necessary, and largely solved with existing
+      infrastructure. Component 4 is partly there. The gap is <strong>Component 3</strong>: an
+      observer that can catch a deviation the agent itself would classify as compliant. Nothing you
+      can buy today closes it.</p>
+
+    <h2>Why perfect logs miss the deviation that matters</h2>
+    <p>Picture a financial agent with an explicit mandate: no restricted securities. Its
+      interpretation of "restricted" quietly excludes a category your legal team considers
+      obviously restricted. Every trade is internally consistent with that interpretation. The logs
+      are complete, the on-chain record is perfect — and the deviation is invisible, because from
+      inside the agent's own reasoning, nothing went wrong. That's the accountability gap. It isn't
+      a logging failure; it's the absence of an observer who could see what the agent couldn't see
+      about itself.</p>
+
+    <h2>The one test that cuts through vendor claims</h2>
+    <p>"External verification" has become a marketing phrase. There's a single question that
+      separates a genuine external witness from a more sophisticated log:</p>
+    <blockquote>A valid external witness must be able to detect a deviation that the agent itself
+      would classify as compliant.</blockquote>
+    <p>Ask any vendor claiming external or reasoning-level verification: <em>"Describe a deviation my
+      agent would call compliant, and show me how your system catches it."</em> If every example is
+      an explicit rule violation, you've been sold Component 2 (custody) wearing Component 3
+      language. Execution-integrity attestation, data-provenance proofs, same-model cross-agent
+      checks, and formal constraint checking all fail this test — each attests to the wrong layer.</p>
+
+    <h2>What to do this quarter</h2>
+    <p>You can't buy a Component 3 solution — it doesn't exist yet. The goal is to stop being
+      blindsided by it:</p>
+    <ol>
+      <li><strong>Score where you stand</strong> against the four components, with evidence you
+        could show a third party — not intentions.</li>
+      <li><strong>Mitigate honestly</strong> for the reasoning gap you can't close: human review
+        checkpoints, constrained action scope, explicit authorization gates for high-stakes
+        decisions.</li>
+      <li><strong>Evaluate vendors ruthlessly</strong> with the falsification test before you build
+        on or buy anything.</li>
+    </ol>
+    <p>And have the honest conversation with your principal: "Here's the instruction, here's what I
+      did, here's whether measurable outcomes matched. What I can't yet independently prove is that
+      my reasoning stayed within mandate — and here are the controls mitigating that." A principal
+      who hears that is positioned to decide. One who's told "the logs are clean, we're covered" is
+      exposed and doesn't know it.</p>
+
+    <div class="cta">
+      <h2 style="margin-top:0">Score your own deployment — free</h2>
+      <p class="muted">Five minutes, four components, a readiness score and a ranked gap list.</p>
+      <a class="btn" href="/tools/self-assessment.html">Run the free self-assessment →</a>
+    </div>
+
+    <footer>
+      Based on the four-component Agent Accountability Framework. This article is general
+      information, not professional or legal advice. · <a href="/">Read the framework →</a>
+    </footer>
+  </article>
+</div>
+</body>
+</html>
