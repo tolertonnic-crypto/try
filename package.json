@@ -1,0 +1,12 @@
+{
+  "name": "wealthforge-framework",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Agent Accountability Framework — public site, free self-assessment, and paid Pro report (Vercel serverless).",
+  "dependencies": {
+    "stripe": "^16.12.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

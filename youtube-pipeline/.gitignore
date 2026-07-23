@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+data/
+review/queue/
+review/approved/
+review/rejected/
+renders/
+client_secret*.json
+token.json

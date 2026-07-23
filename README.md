@@ -4,6 +4,13 @@
 
 Maintained by WealthForge · Version 1.0 · Source of record
 
+**Live site:** a buyer-facing landing page + the free interactive self-assessment tool.
+
+**Product:** this repo also ships a self-serve **Pro report** — a paid, Claude-generated
+report tailored to a user's self-assessment, delivered instantly with no human in the loop
+(serverless functions in `api/`). Deploy to Vercel and connect a Stripe account to turn it on;
+see [`DEPLOY.md`](DEPLOY.md). Terms in [`TERMS.md`](TERMS.md).
+
 ---
 
 Autonomous agents cannot currently prove they acted within their mandate. That is not a
@@ -49,6 +56,8 @@ same-family cross-agent verification, formal constraint checking — fail it. Se
 | [`docs/falsification-test.md`](docs/falsification-test.md) | Standalone evaluation tool for testing any Component 3 claim |
 | [`docs/assessment-methodology.md`](docs/assessment-methodology.md) | **The Agent Accountability Assessment** — a scored rubric for evaluating a real deployment |
 | [`tools/self-assessment.html`](tools/self-assessment.html) | Interactive readiness scorecard — score your own deployment in ~5 minutes |
+| [`blog/agent-accountability-gap.md`](blog/agent-accountability-gap.md) | Buyer-facing blog post — publishable on Substack, Medium, or a personal site |
+| [`index.html`](index.html) | Landing page for the published GitHub Pages site |
 | [`products/services.md`](products/services.md) | Advisory, assessment, and licensing offerings with pricing |
 | [`products/buyer-brief.md`](products/buyer-brief.md) | The framework explained for compliance, risk, and infrastructure buyers |
 | [`MONETIZATION.md`](MONETIZATION.md) | The revenue engine: how the IP converts to revenue, with a dated timeline |
