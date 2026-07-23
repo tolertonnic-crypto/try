@@ -1,8 +1,8 @@
 # Channel + pipeline configuration. No secrets here — secrets live in .env.
 
 channel:
-  name: ""                # your channel name, used in metadata templates
-  handle: ""              # @handle, appended to Shorts pinned-comment template
+  name: "History_Bites"
+  handle: "@Historybites_mini"   # appended to Shorts pinned-comment template
   language: en
   # YouTube category IDs: 27 = Education, 22 = People & Blogs
   category_id: "27"
