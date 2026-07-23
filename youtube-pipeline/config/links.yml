@@ -1,0 +1,46 @@
+# Affiliate link registry.
+#
+# The metadata generator picks links whose `pillars` include the video's pillar,
+# most-specific first, max `max_links_per_video`. Every emitted description with
+# at least one affiliate link ALWAYS includes the FTC disclosure below — this is
+# enforced in code and covered by a test.
+#
+# `url` is the bare product/landing URL. UTM parameters are appended per video:
+#   utm_source=youtube, utm_medium=description, utm_campaign=<video-slug>
+# so conversions can be attributed per video in your affiliate dashboards.
+#
+# For Amazon Associates, set `amazon_tag` and use plain amazon.com product URLs;
+# the generator appends ?tag=<amazon_tag> (Amazon ignores UTM but the tag carries
+# attribution; UTM params are still added for your own analytics tools).
+
+max_links_per_video: 3
+
+ftc_disclosure: >-
+  Some links above are affiliate links. If you buy through them, this channel
+  earns a small commission at no extra cost to you. As an Amazon Associate I
+  earn from qualifying purchases.
+
+amazon_tag: ""   # e.g. mychannel-20  (leave empty until you have one)
+
+links:
+  - id: general-history-book
+    label: "A readable single-volume history I recommend"
+    url: "https://www.amazon.com/dp/EXAMPLE"
+    pillars: [objects-with-a-past, the-day-everything-changed, forgotten-figures]
+    kind: amazon
+  - id: engineering-history-book
+    label: "The best book on pre-modern engineering"
+    url: "https://www.amazon.com/dp/EXAMPLE2"
+    pillars: [how-did-they-actually]
+    kind: amazon
+  - id: myths-methods-book
+    label: "How historians actually know things"
+    url: "https://www.amazon.com/dp/EXAMPLE3"
+    pillars: [myths-vs-records]
+    kind: amazon
+  # Add non-Amazon programs freely:
+  # - id: audiobook-trial
+  #   label: "Free audiobook trial"
+  #   url: "https://example-affiliate-network.com/your-link"
+  #   pillars: [forgotten-figures]
+  #   kind: generic

@@ -1,0 +1,58 @@
+# Channel + pipeline configuration. No secrets here — secrets live in .env.
+
+channel:
+  name: ""                # your channel name, used in metadata templates
+  handle: ""              # @handle, appended to Shorts pinned-comment template
+  language: en
+  # YouTube category IDs: 27 = Education, 22 = People & Blogs
+  category_id: "27"
+
+scheduling:
+  timezone: UTC
+  # Slots the review CLI assigns to approved videos, next open slot first.
+  longform_slots:
+    - { day: TUE, time: "15:00" }
+    - { day: SAT, time: "15:00" }
+  shorts_slots:
+    - { day: MON, time: "16:00" }
+    - { day: WED, time: "16:00" }
+    - { day: FRI, time: "16:00" }
+
+generation:
+  model: claude-opus-4-8
+  # Long-form target length in words (~150 wpm narration => 9-12 min)
+  script_words_min: 1350
+  script_words_max: 1800
+  shorts_per_video: 2
+  # Structures rotate; the generator won't reuse any of the last N structures.
+  structure_history_window: 3
+
+similarity:
+  # Compare a candidate topic against the last N used topics.
+  window: 20
+  # Jaccard similarity (0..1) over title+angle tokens above which we flag.
+  flag_threshold: 0.35
+
+quota:
+  # YouTube Data API v3 daily quota (default project allocation).
+  daily_limit: 10000
+  # Warn before any single operation costing >= this many units.
+  warn_at_units: 100
+  # Unit costs — configurable because Google occasionally revises them.
+  # These are the officially documented defaults; check
+  # https://developers.google.com/youtube/v3/determine_quota_cost
+  costs:
+    videos.insert: 1600
+    videos.update: 50
+    videos.list: 1
+    search.list: 100
+    channels.list: 1
+    playlistItems.list: 1
+
+upload:
+  # We mark uploads as containing altered/synthetic content whenever the
+  # pipeline used TTS narration or generated imagery. Leave true if using
+  # the ElevenLabs stub; the review CLI shows the flag per item.
+  default_synthetic: true
+  made_for_kids: false
+  privacy_before_publish: private   # scheduled videos must be private + publishAt
