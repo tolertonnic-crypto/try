@@ -16,6 +16,27 @@ from . import paths
 
 _client = None
 
+# When True, generate_json() returns schema-shaped placeholder data instead of
+# calling the API — lets the whole pipeline be exercised with no keys at all.
+DRY_RUN = False
+
+
+def _stub_from_schema(schema: dict, name: str = "value"):
+    if "enum" in schema:
+        return schema["enum"][0]
+    t = schema.get("type")
+    if t == "object":
+        return {k: _stub_from_schema(v, k) for k, v in schema.get("properties", {}).items()}
+    if t == "array":
+        return [_stub_from_schema(schema["items"], name)]
+    if t == "string":
+        return f"[dry-run] {name}"
+    if t in ("integer", "number"):
+        return 0
+    if t == "boolean":
+        return False
+    return None
+
 
 def set_client(client) -> None:
     """Inject a client (tests, dry-run). Pass None to reset to the real SDK client."""
@@ -34,6 +55,8 @@ def _get_client():
 
 def generate_json(system: str, prompt: str, schema: dict, max_tokens: int = 32000) -> dict:
     """One structured-output generation. Returns the parsed JSON object."""
+    if DRY_RUN:
+        return _stub_from_schema(schema, "root")
     client = _get_client()
     model = paths.settings()["generation"]["model"]
     with client.messages.stream(

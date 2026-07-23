@@ -6,6 +6,7 @@
   python cli.py metadata <slug>             title/description/tags for a draft
   python cli.py review                      human review gate (approve/edit/reject)
   python cli.py upload <slug> <video.mp4>   upload an APPROVED item (scheduled)
+  python cli.py shorts <parent-slug>        stage Shorts cuts from an approved video
   python cli.py analytics [--days N]        pull analytics -> CSV
   python cli.py weekly                      weekly summary + emphasis suggestion
   python cli.py quota                       show today's quota usage
@@ -48,9 +49,15 @@ def main() -> int:
 
     p_gen = sub.add_parser("generate")
     p_gen.add_argument("--topic", default=None, help="topic id, e.g. t0003")
+    p_gen.add_argument("--dry-run", action="store_true",
+                       help="placeholder output, no API call — for trying the flow")
 
     p_meta = sub.add_parser("metadata")
     p_meta.add_argument("slug")
+    p_meta.add_argument("--dry-run", action="store_true")
+
+    p_shorts = sub.add_parser("shorts", help="stage Shorts cuts from an approved long-form item")
+    p_shorts.add_argument("parent_slug")
 
     sub.add_parser("review")
 
@@ -87,7 +94,10 @@ def main() -> int:
                 print(f"    {m['score']:.2f}  {m['title']}")
 
     elif args.cmd == "generate":
-        from pipeline import backlog, script_generator
+        from pipeline import backlog, llm, script_generator
+        if args.dry_run:
+            llm.DRY_RUN = True
+            print("(dry run — placeholder script, no API call)")
         topic = backlog.next_topic(args.topic)
         report = backlog.check_topic(topic)
         if report["flagged"]:
@@ -102,13 +112,23 @@ def main() -> int:
         print(f"  next: python cli.py metadata {item['slug']}")
 
     elif args.cmd == "metadata":
-        from pipeline import metadata_generator
+        from pipeline import llm, metadata_generator
         from pipeline.review.queue import load_item
         from pipeline.reporting.affiliate import record_links_for_item
+        if args.dry_run:
+            llm.DRY_RUN = True
+            print("(dry run — placeholder metadata, no API call)")
         item = load_item(args.slug)
         item = metadata_generator.generate(item)
         record_links_for_item(item)
         print(f"✔ metadata added — item is pending_review. Run: python cli.py review")
+
+    elif args.cmd == "shorts":
+        from pipeline.shorts import stage_shorts
+        staged = stage_shorts(args.parent_slug)
+        for s in staged:
+            print(f"✔ staged {s['slug']} (pending_review)")
+        print("Review them with: python cli.py review")
 
     elif args.cmd == "review":
         from pipeline.review.cli import review_loop

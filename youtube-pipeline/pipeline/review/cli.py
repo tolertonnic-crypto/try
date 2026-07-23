@@ -29,7 +29,10 @@ def _wrap(text, indent="  "):
 
 def show_item(item: dict) -> None:
     _hr("═")
-    print(f"■ {item['slug']}   [{item['status']}]   pillar: {item['topic']['pillar']}")
+    kind = item.get("kind", "longform")
+    print(f"■ {item['slug']}   [{item['status']}]   {kind}   pillar: {item['topic']['pillar']}")
+    if kind == "short":
+        print(f"  cut from approved long-form: {item.get('parent_slug')}")
     _hr()
     meta = item.get("metadata", {})
     if meta:
@@ -111,7 +114,8 @@ def review_loop() -> None:
                     print("Not approved — checklist not confirmed.")
                     continue
                 note = input("Review note (what did you check/change?): ").strip()
-                slot = queue.next_publish_slot("longform")
+                kind = "shorts" if item.get("kind") == "short" else "longform"
+                slot = queue.next_publish_slot(kind)
                 custom = input(f"Publish slot [{slot}] (enter to accept, or RFC3339): ").strip()
                 queue.approve(item, True, custom or slot, note)
                 print(f"✔ approved, scheduled for {custom or slot}. "

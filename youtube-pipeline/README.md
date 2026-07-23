@@ -47,8 +47,25 @@ python cli.py metadata <slug>     # titles/description/tags + affiliate links
 # ...produce the video (TTS/B-roll/ffmpeg stubs in pipeline/assets/, or edit manually)
 python cli.py review              # THE GATE: checklist, approve/edit/reject, assign slot
 python cli.py upload <slug> final.mp4   # approved items only; scheduled via publishAt
+python cli.py shorts <slug>             # stage the video's Shorts cuts for review
 python cli.py analytics && python cli.py weekly
 ```
+
+### Try the whole flow with zero API keys
+
+`generate` and `metadata` accept `--dry-run`: placeholder content is staged so
+you can walk generate → metadata → review → (upload gate) today, before any
+keys are configured. Placeholders are clearly marked `[dry-run]`.
+
+### Shorts repurposing
+
+Every long-form script includes 1–3 self-contained Shorts cuts. After the
+parent is approved (and uploaded, so the back-link exists),
+`python cli.py shorts <parent-slug>` stages each cut as its own queue item:
+title from the cut's hook + `#Shorts`, description linking to the full video,
+shorts schedule slots (MON/WED/FRI by default). Shorts pass through the same
+review gate — no affiliate links in Shorts descriptions (they dilute the
+parent-video funnel), so no disclosure is needed there.
 
 ## YouTube API setup (read this once, carefully)
 
