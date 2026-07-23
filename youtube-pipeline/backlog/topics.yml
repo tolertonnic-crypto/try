@@ -1,0 +1,33 @@
+# Topic backlog. Add ideas with `python cli.py backlog add "..." --pillar <pillar>`
+# or edit this file directly. The pipeline tracks status here.
+#
+# status: unused | queued | used | rejected
+# pillar: objects-with-a-past | the-day-everything-changed | forgotten-figures
+#         | how-did-they-actually | myths-vs-records
+
+topics:
+  - id: t0001
+    title: "Why do clocks run clockwise?"
+    angle: "Sundials in the northern hemisphere set the direction of every clock on Earth"
+    pillar: objects-with-a-past
+    status: unused
+  - id: t0002
+    title: "The winter the Thames froze solid"
+    angle: "London built a city on the ice — frost fairs as an economic emergency, not a party"
+    pillar: the-day-everything-changed
+    status: unused
+  - id: t0003
+    title: "The woman who mapped the ocean floor"
+    angle: "Marie Tharp's map was dismissed as 'girl talk' — then it proved continental drift"
+    pillar: forgotten-figures
+    status: unused
+  - id: t0004
+    title: "How did they build cathedrals without cranes?"
+    angle: "The great wheel: medieval builders used human hamster wheels and geometry, not lost secrets"
+    pillar: how-did-they-actually
+    status: unused
+  - id: t0005
+    title: "Vikings never wore horned helmets"
+    angle: "One 1876 opera costume designer invented the most famous image in Norse history"
+    pillar: myths-vs-records
+    status: unused
